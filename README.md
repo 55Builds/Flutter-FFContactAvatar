@@ -1,5 +1,7 @@
 # ff_contact_avatar
 A highly configurable Column widget for displaying a contact avatar with name and short message.
+
+
 ![](demo.png)
 
 ## Add dependency
@@ -31,7 +33,7 @@ import 'package:ff_contact_avatar/ff_contact_avatar.dart';
               name: 'Mr Ed',
               message: 'He\'s a horse',
               image: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/8/81/Mister_Ed.JPG'),
+                  '<URL of file here or swap for Image.asset(...)'),
               showBadge: true,
             ),
           ],
