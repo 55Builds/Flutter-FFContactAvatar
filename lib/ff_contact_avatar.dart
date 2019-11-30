@@ -3,69 +3,41 @@ library flutter_ff_contact_avatar;
 import 'package:flutter/material.dart';
 import 'dart:math' show min;
 
-class FFContactAvatarTheme {
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final Color badgeColor;
-  final double avatarRadius;
-  final TextStyle initialsTextStyle;
-  final TextStyle nameTextStyle;
-  final TextStyle messageTextStyle;
-  final double verticalPadding;
-  final double avatarElevation;
+import 'ff_contact_avatar_model.dart';
+import 'package:ff_contact_avatar/ff-contact-avatar-theme.dart';
 
-  FFContactAvatarTheme({
-    this.backgroundColor,
-    this.foregroundColor,
-    this.badgeColor,
-    this.avatarRadius,
-    this.initialsTextStyle,
-    this.nameTextStyle,
-    this.messageTextStyle,
-    this.verticalPadding,
-    this.avatarElevation,
-  });
-
-  static final FFContactAvatarTheme defaultTheme = FFContactAvatarTheme(
-    backgroundColor: Colors.blueGrey,
-    foregroundColor: Colors.white,
-    badgeColor: Colors.red,
-    avatarRadius: 31,
-    initialsTextStyle: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 26,
-      letterSpacing: 1.4,
-    ),
-    nameTextStyle: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 13.0,
-    ),
-    messageTextStyle: TextStyle(
-      fontWeight: FontWeight.normal,
-      fontSize: 11.0,
-    ),
-    verticalPadding: 2,
-    avatarElevation: 4,
-  );
-}
+export 'package:ff_contact_avatar/ff_contact_avatar_list.dart';
+export 'package:ff_contact_avatar/ff-contact-avatar-theme.dart';
+export 'ff_contact_avatar_model.dart';
 
 // ignore: must_be_immutable
 class FFContactAvatar extends StatelessWidget {
-  final Image image;
-  final String name;
-  final String message;
-  final bool showBadge;
+  Image image;
+  String name;
+  String message;
+  bool showBadge;
+  final FFContactAvatarModel model;
+  final VoidCallback onTap;
 
   FFContactAvatarTheme theme;
 
   FFContactAvatar({
     FFContactAvatarTheme theme,
+    this.model,
     this.image,
     this.name,
     this.message,
     this.showBadge = false,
+    this.onTap,
   }) {
     this.theme = (theme == null) ? FFContactAvatarTheme.defaultTheme : theme;
+
+    if (model != null) {
+      this.image = model.image;
+      this.name = model.name;
+      this.message = model.message;
+      this.showBadge = model.showBadge;
+    }
   }
 
   static const double avatarRadius = 31;
@@ -108,25 +80,28 @@ class FFContactAvatar extends StatelessWidget {
 
     Color badgeColor = showBadge ? theme.badgeColor : Colors.transparent;
 
-    return Material(
-      elevation: theme.avatarElevation,
-      borderRadius: BorderRadius.circular(avatarRadius),
-      child: Stack(
-        children: <Widget>[
-          ca,
-          Positioned(
-            top: 1,
-            right: 1,
-            width: 16,
-            height: 16,
-            child: Container(
-              decoration: BoxDecoration(
-                color: badgeColor,
-                borderRadius: BorderRadius.circular(8.0),
+    return GestureDetector(
+      onTap: this.onTap,
+      child: Material(
+        elevation: theme.avatarElevation,
+        borderRadius: BorderRadius.circular(avatarRadius),
+        child: Stack(
+          children: <Widget>[
+            ca,
+            Positioned(
+              top: 1,
+              right: 1,
+              width: 16,
+              height: 16,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: badgeColor,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
